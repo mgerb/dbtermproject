@@ -1,0 +1,8 @@
+Twitter Database
+Mitchell Gerber and Jason Carpenter
+	We will be addressing the problem of twitter data handling.  Many companies pay good money to know what people are talking about, how they are talking about, and who is talking about it. 
+
+Tiered design:
+1.	A browser ui for searching the database
+2.	A data filter for input and output formatting
+3.	The database itself
