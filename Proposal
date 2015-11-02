@@ -1,9 +1,9 @@
 Subscription Database
 Mitchell Gerber and Jason Carpenter
-	We will be creating a subscription service. It will store and hold user data, purchase data, and subscription statuses.
+	We will be creating a subscription service. It will store and hold user data, purchase data, and subscription statuses. The source of our data will be generated examples done by hand. As most of the data is user specific.
 	Three data tables will be utilized. A User Data one, which will contain Name, Username, and lastname. There will be a purchase database with credit card info and purchase success.
 	The last one will be a user service data, which will hold in avatar information, location, and game data. [We need more data tables according to Nick, I am thinking a guild table, and a game content table]
-	
+	The user ui will have a quests log that will allow completion of quests from the page. This will manifest as a boolean indicator in the quests table.
 
 Tiered design:
 1.	A browser ui for searching the database
