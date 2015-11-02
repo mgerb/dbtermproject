@@ -1,0 +1,166 @@
+package dynamicWebProject;
+
+import java.io.*;
+
+/** Simple servlet used to test server. */
+
+public class servlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		HttpSession session = request.getSession();
+		System.out.println("session ---- " + session.getAttribute("username"));
+		
+		RequestDispatcher rd;
+		
+		System.out.println("Request: " + request.getRequestURI());
+		
+		String requestURI = request.getRequestURI();
+		
+		if (requestURI.equals("/Lab6/")){
+			rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
+		}
+		else if (requestURI.equals("/Lab6/login")){
+			
+			rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
+		}
+		
+		else if (requestURI.equals("/Lab6/register")){
+			
+			rd = request.getRequestDispatcher("register.jsp");
+			rd.forward(request, response);
+		}
+
+		else if (requestURI.equals("/Lab6/welcome")){
+			rd = request.getRequestDispatcher("welcome.jsp");
+			rd.forward(request, response);
+		}
+		else if (requestURI.equals("/Lab6/logout")){
+			session.removeAttribute("username");
+			rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
+		}
+		else if (requestURI.equals("/Lab6/submitData")){
+			rd = request.getRequestDispatcher("submitData.jsp");
+			rd.forward(request, response);
+		}
+		else if(requestURI.equals("/Lab6/submissionResults")){
+			String user = (String) session.getAttribute("username");
+			request.setAttribute("user", user);
+			
+			CachedRowSet results = DBEntry.selectStatement("Select * from lab6.order where username = '" + session.getAttribute("username")+ "';");
+			
+			try {
+				while (results.next()){
+					results.updateString(8, hideCreditCard(results.getString(8)));
+				}
+				
+				results.first();
+				results.previous();
+				request.setAttribute("resultSet", results);
+				rd = request.getRequestDispatcher("submissionResults.jsp");
+				rd.forward(request, response);
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+				
+	}
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+			IOException {
+		RequestDispatcher rd;
+		
+		HttpSession session = request.getSession();
+		
+		System.out.println("Request: " + request.getRequestURI());
+		
+		String requestURI = request.getRequestURI();
+		
+		if (requestURI.equals("/Lab6/")){
+			rd = request.getRequestDispatcher("login.jsp");
+			System.out.println("Forwarding");
+			rd.forward(request, response);
+			
+		}
+		else if (requestURI.equals("/Lab6/login")){
+			String username = request.getParameter("username");
+			String password = request.getParameter("password");
+			
+			try {
+				boolean exists = DBEntry.checkCredentials(username, password);
+				
+				if (exists){
+					session.setAttribute("username", username);
+					rd = request.getRequestDispatcher("welcome.jsp");
+					rd.forward(request, response);
+				}
+				else {
+					request.setAttribute("message", "Invalid Login");
+					rd = request.getRequestDispatcher("login.jsp");
+					rd.forward(request, response);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		else if (requestURI.equals("/Lab6/submitData")){
+			
+			String itemNumber, price, firstName, lastName, address, creditCard, creditCardNumber, username;
+			
+			username = (String) session.getAttribute("username");
+			itemNumber = request.getParameter("itemNumber");
+			price = request.getParameter("price");
+			firstName = request.getParameter("firstName");
+			lastName = request.getParameter("lastName");
+			address = request.getParameter("address");
+			creditCard = request.getParameter("creditCard");
+			creditCardNumber = request.getParameter("creditCardNumber");
+			
+			customerOrder order = new customerOrder(username, itemNumber, price, firstName, lastName, address, creditCard, creditCardNumber);
+			
+			if (DBEntry.saveOrder(order)){				
+				
+				response.sendRedirect("submissionResults");	
+			}
+		}
+		
+		else if (requestURI.equals("/Lab6/register")){
+			
+			String username = request.getParameter("username");
+			String password = request.getParameter("password");
+			
+			try {
+				DBEntry.insertUser(username, password);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
+		}
+
+		else if (requestURI.equals("/Lab6/welcome")){
+	
+	
+		}
+		
+	}
+	
+	public static String hideCreditCard(String number){
+		String partialNumber = number.substring((number.length()-5),number.length());
+		
+		return "xxxxxx" + partialNumber;
+	}
+	
+}
+
+
