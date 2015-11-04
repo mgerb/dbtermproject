@@ -13,9 +13,18 @@ public class servlet extends HttpServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+		
+			if (request.getRequestURI().equals("/dynamicWebProject/")){
+				RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 			
-			rd.forward(request, response);
+				rd.forward(request, response);
+			}
+			
+			else if(request.getRequestURI().equals("/dynamicWebProject/style.css/")){
+				RequestDispatcher rd = request.getRequestDispatcher("style.css");
+				
+				rd.forward(request, response);
+			}
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
