@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>450</x>
+      <y>430</y>
+      <w>210</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>User Table
+--
+account_number
+user_name
+first_name
+last_name</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>450</x>
+      <y>150</y>
+      <w>210</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Purchase Table
+--
+account_number
+card_number
+card_type
+transaction_amount</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>450</x>
+      <y>300</y>
+      <w>210</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>User_Data Table
+--
+account_number
+char_name
+char_level
+locationx
+locationy</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>170</x>
+      <y>230</y>
+      <w>210</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Guild Table
+--
+guild_name
+char_name
+leader_boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>170</x>
+      <y>150</y>
+      <w>210</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>User_Friends
+--
+char_name
+friend_name</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>930</x>
+      <y>270</y>
+      <w>60</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Admin</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>930</x>
+      <y>140</y>
+      <w>60</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>User</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>370</x>
+      <y>90</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>Database</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>920</x>
+      <y>90</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>Browser</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>650</x>
+      <y>200</y>
+      <w>300</w>
+      <h>300</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+Creates Account</panel_attributes>
+    <additional_attributes>10.0;280.0;280.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>650</x>
+      <y>200</y>
+      <w>300</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+Changes data ingame</panel_attributes>
+    <additional_attributes>10.0;190.0;280.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>650</x>
+      <y>190</y>
+      <w>300</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+Makes purchase</panel_attributes>
+    <additional_attributes>10.0;20.0;280.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>170</x>
+      <y>330</y>
+      <w>210</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>User Quests
+--
+char_name
+quest_id</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>170</x>
+      <y>430</y>
+      <w>210</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Quests
+--
+quest_id
+quest_title
+completion</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
