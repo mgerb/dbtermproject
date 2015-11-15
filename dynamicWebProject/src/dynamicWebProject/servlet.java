@@ -3,6 +3,7 @@ package dynamicWebProject;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import java.sql.*;
 
 import org.apache.catalina.connector.Request;
 
@@ -20,9 +21,14 @@ public class servlet extends HttpServlet {
 				rd.forward(request, response);
 			}
 			
-			else if(request.getRequestURI().equals("/dynamicWebProject/style.css/")){
-				RequestDispatcher rd = request.getRequestDispatcher("style.css");
-				
+			else if (request.getRequestURI().equals("/dynamicWebProject/login")){
+				RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			
+				rd.forward(request, response);
+			}
+			else if (request.getRequestURI().equals("/dynamicWebProject/register")){
+				RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
+			
 				rd.forward(request, response);
 			}
 	}
