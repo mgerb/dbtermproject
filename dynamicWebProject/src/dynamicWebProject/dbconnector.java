@@ -35,6 +35,29 @@ public class dbconnector {
 		   
 		   return cachedResults;
 	   }
+	   
+	   public static boolean insertStatement(String into, String[] cols, String[] data) throws ClassNotFoundException{
+		   Connection conn = getConnection();
+		   CachedRowSet cachedResults = null;
+		   
+		   String query = "insert into " + into + " (";
+		   for(int i=0;i<cols.length;i++){
+			   //For each Column, we add to the query
+			   query.concat(cols[i] +", ");
+		   }
+		   
+		   query.concat(") values(");
+		   
+		   for(int i=0;i<cols.length;i++){
+			   //For each value
+			   query.concat(data[i] +", ");
+		   }
+		   query.concat(")");
+		   
+		   return false;
+	   }
+	   
+	   
 }
 
 
