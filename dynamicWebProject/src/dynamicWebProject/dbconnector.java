@@ -1,6 +1,8 @@
 package dynamicWebProject;
 import java.sql.*;
 
+import javax.sql.rowset.CachedRowSet;
+
 public class dbconnector {
 	
 	// JDBC driver name and database URL
@@ -23,6 +25,15 @@ public class dbconnector {
 			   return null;
 		   }
 		   
+	   }
+	   
+	   public static CachedRowSet selectStatement(String select, String from, String where, String order) throws ClassNotFoundException{
+		   Connection conn = getConnection();
+		   CachedRowSet cachedResults = null;
+		   
+		   String query = "Select " + select + " from " + from + " where " + where + ";";
+		   
+		   return cachedResults;
 	   }
 }
 
