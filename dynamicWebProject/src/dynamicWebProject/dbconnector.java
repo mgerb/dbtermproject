@@ -1,24 +1,30 @@
 package dynamicWebProject;
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 
 import javax.sql.rowset.CachedRowSet;
+import javax.sql.rowset.RowSetProvider;
+
+import com.mysql.jdbc.PreparedStatement;
 
 public class dbconnector {
 	
 	// JDBC driver name and database URL
 	   static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	   static final String DB_URL = "jdbc:mysql://localhost/EMP";
+	   static final String DB_URL = "jdbc:mysql://localhost:3306";
+	   static final String DB_NAME = "wom.";
 
 	   //  Database credentials
-	   static final String USER = "username";
-	   static final String PASS = "password";
+	   static final String USER = "root";
+	   static final String PASS = "";
 	   
 	   
 	   public static Connection getConnection() throws ClassNotFoundException{
 		   try{
 			   Class.forName("com.mysql.jdbc.Driver");
 			   
-			   return DriverManager.getConnection(DB_URL);
+			   return DriverManager.getConnection(DB_URL,"root","");
 		   }
 		   
 		   catch(SQLException se){
@@ -27,39 +33,84 @@ public class dbconnector {
 		   
 	   }
 	   
-	   public static CachedRowSet selectStatement(String select, String from, String where, String order) throws ClassNotFoundException{
+	   public static CachedRowSet selectStatement(String select, String from, String where, String order) throws ClassNotFoundException, SQLException{
 		   Connection conn = getConnection();
 		   CachedRowSet cachedResults = null;
 		   
-		   String query = "Select " + select + " from " + from + " where " + where + ";";
+		   String query = "Select " + select + " from " + DB_NAME + from;
+		   
+		   
+		   System.out.println("query="+query);
+			PreparedStatement sql=(PreparedStatement) conn.prepareStatement(query);
+			ResultSet results;
+			results=sql.executeQuery();
+			System.out.println("Afterquery="+query);
+			
+			cachedResults = RowSetProvider.newFactory().createCachedRowSet();
+			cachedResults.populate(results);
+			
+			//cachedResults.next();
 		   
 		   return cachedResults;
 	   }
 	   
 	   public static boolean insertStatement(String into, String[] cols, String[] data) throws ClassNotFoundException{
 		   Connection conn = getConnection();
-		   CachedRowSet cachedResults = null;
 		   
-		   String query = "insert into " + into + " (";
-		   for(int i=0;i<cols.length;i++){
-			   //For each Column, we add to the query
-			   query.concat(cols[i] +", ");
+		   if(cols.length > 0 && data.length > 0){
+			   //Check for the data length size
+			   String query = "insert into "+ DB_NAME + into + " (";
+			   
+			   for(int i=0;i<cols.length;i++){
+				   //For each Column, we add to the query
+				   System.out.println("Adding:" + cols[i]);
+				   query = query.concat(cols[i] +", ");
+				   System.out.println("Query:" + query);
+			   }
+			   
+			   	   query = query.substring(0, query.length() - 2);
+			   
+			   
+			  query = query.concat(") values(");
+			   
+			   for(int i=0;i<cols.length;i++){
+				   //For each value
+				   query = query.concat(data[i] +", ");
+			   }
+			   
+			   query = query.substring(0, query.length() - 2);
+			   
+			   query = query.concat(")");
+			   
+			   System.out.println("query="+query);
+			   PreparedStatement sql;
+			try {
+				sql = (PreparedStatement) conn.prepareStatement(query);
+				 sql.executeUpdate();
+				 return true;
+				 
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}		
+			   
+		   }else{
+			   
+			   return false;
 		   }
-		   
-		   query.concat(") values(");
-		   
-		   for(int i=0;i<cols.length;i++){
-			   //For each value
-			   query.concat(data[i] +", ");
-		   }
-		   query.concat(")");
-		   
-		   return false;
 	   }
 	   
-	   
+	   public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
+			
+		   selectStatement("*","user","","");
+		   
+		   String l_in[] = {"account_number,first_name,last_name"};
+		   String l_in2[] = {"'3', 'NAMESET', 'NAMELAST'"};
+		   
+		  System.out.println(insertStatement("user",l_in,l_in2));
+		   
+		}
 }
-
 
 /*
  * Connection conn = null;
