@@ -104,10 +104,9 @@ public class dbconnector {
 			
 		   selectStatement("*","user","","");
 		   
-		   String l_in[] = {"account_number,first_name,last_name"};
-		   String l_in2[] = {"'3', 'NAMESET', 'NAMELAST'"};
-		   
-		  System.out.println(insertStatement("user",l_in,l_in2));
+		 //  String l_in[] = {"first_name","last_name"};
+		  // String l_in2[] = {"'NAMESET'","'NAMELAST'"};
+		 // System.out.println(insertStatement("user",l_in,l_in2));
 		   
 		}
 }
