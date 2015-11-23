@@ -13,9 +13,11 @@ public class servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
+			System.out.println("teststeststset");
+			System.out.println(request.getRequestURI());
+			
 			if (request.getRequestURI().equals("/dynamicWebProject/")){
+				System.out.println(request.getRequestURI());
 				RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 			
 				rd.forward(request, response);
@@ -36,6 +38,14 @@ public class servlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
 			IOException {
 	
+		//handle login information
+		if (request.getRequestURI().equals("/dynamicWebProject/login")){
+			
+			String username = (String) request.getAttribute("username");
+			String password = (String) request.getAttribute("password");
+			
+			//query db to check and see if user exists - if so set session equal to username
+		}
 }
 	
 }

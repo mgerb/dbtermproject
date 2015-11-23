@@ -8,10 +8,35 @@
 <title>Insert title here</title>
 </head>
 <body>
-<div class="container">
+	<div class="container">
 
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
+<div class="header">
+<h1 class="headerText">MMO Database</h1>
+</div>
+
+	<nav class="squareCorners navbar navbar-inverse">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="./">CS485</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="./">Home</a></li>
+            <li class="active"><a href="login">Login</a></li>
+            <li><a href="register">Register</a></li>
+          </ul>
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container -->
+    </nav><!-- /.navbar -->
+	
+	<form class="form-signin" method="post" action="login">
+        <h2 class="form-signin-heading center">Login</h2>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
@@ -19,6 +44,7 @@
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
 
-    </div> <!-- /container -->
+</div>
+
 </body>
 </html>
