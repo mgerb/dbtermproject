@@ -38,6 +38,14 @@ public class servlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
 			IOException {
 	
+		//handle login information
+		if (request.getRequestURI().equals("/dynamicWebProject/login")){
+			
+			String username = (String) request.getAttribute("username");
+			String password = (String) request.getAttribute("password");
+			
+			//query db to check and see if user exists - if so set session equal to username
+		}
 }
 	
 }

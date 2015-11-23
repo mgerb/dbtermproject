@@ -8,8 +8,21 @@
     display: block;
 }
 
+.headerText{
+	text-align: center;
+	vertical-align: middle;
+	font-size: 75px;
+	line-height: 350px;
+	color: white;
+	margin-top: 0px;
+}
+
+.navbar{
+          border-radius: 0;
+}
+
 body {
-  padding-top: 40px;
+  padding-top: 0px;
   padding-bottom: 40px;
   background-color: #eee;
 }
@@ -47,4 +60,10 @@ body {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.header {
+    height: 350px;
+    background: url("images/banner.jpg") center no-repeat;
+    background-size: cover;
 }
