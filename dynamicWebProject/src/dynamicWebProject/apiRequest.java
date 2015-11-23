@@ -13,7 +13,7 @@ import com.google.gson.JsonParser;
 public class apiRequest {
 
 	
-	public static JsonObject getQuest(String questID) throws IOException{
+	public static JsonObject getQuest(int questID) throws IOException{
 		
 		URL request = new URL("https://us.api.battle.net/wow/quest/" + questID +"?locale=en_US&apikey=9uyk8253nk5hc4ap2ue45bb5mbqtuvhm");
         URLConnection uc = request.openConnection();

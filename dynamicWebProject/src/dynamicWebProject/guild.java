@@ -2,7 +2,7 @@ package dynamicWebProject;
 
 public class guild {
 
-	public static void storeGuild(){
+	public static void addGuild(){
 		
 	}
 	

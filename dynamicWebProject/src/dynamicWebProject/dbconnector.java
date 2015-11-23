@@ -6,6 +6,7 @@ import java.sql.*;
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
 
+import com.google.gson.JsonObject;
 import com.mysql.jdbc.PreparedStatement;
 
 public class dbconnector {
@@ -39,17 +40,24 @@ public class dbconnector {
 		   
 		   String query = "Select " + select + " from " + DB_NAME + from;
 		   
+		   if(!where.equals("")){
+			   //Where is not blank
+			 query = query.concat(" where " + where);  
+		   }
+		   if(!order.equals("")){
+			   //order is not blank
+			   query = query.concat(" order by " + order);
+		   }
 		   
 		   System.out.println("query="+query);
-			PreparedStatement sql=(PreparedStatement) conn.prepareStatement(query);
-			ResultSet results;
-			results=sql.executeQuery();
-			System.out.println("Afterquery="+query);
+		   PreparedStatement sql=(PreparedStatement) conn.prepareStatement(query);
+		   ResultSet results;
+		   results=sql.executeQuery();
 			
-			cachedResults = RowSetProvider.newFactory().createCachedRowSet();
-			cachedResults.populate(results);
+		   cachedResults = RowSetProvider.newFactory().createCachedRowSet();
+		   cachedResults.populate(results);
 			
-			//cachedResults.next();
+		   //cachedResults.next();
 		   
 		   return cachedResults;
 	   }
@@ -100,9 +108,64 @@ public class dbconnector {
 		   }
 	   }
 	   
+	   public static boolean updateStatement(String into, String[] cols, String[] data) throws ClassNotFoundException{
+		   Connection conn = getConnection();
+		   
+		   if(cols.length > 0 && data.length > 0){
+			   //Check for the data length size
+			   String query = "update "+ DB_NAME + into + " (";
+			   
+			   for(int i=0;i<cols.length;i++){
+				   //For each Column, we add to the query
+				   System.out.println("Adding:" + cols[i]);
+				   query = query.concat(cols[i] +", ");
+				   System.out.println("Query:" + query);
+			   }
+			   
+			   	   query = query.substring(0, query.length() - 2);
+			   
+			   
+			  query = query.concat(") set(");
+			   
+			   for(int i=0;i<cols.length;i++){
+				   //For each value
+				   query = query.concat(data[i] +", ");
+			   }
+			   
+			   query = query.substring(0, query.length() - 2);
+			   
+			   query = query.concat(")");
+			   
+			   System.out.println("query="+query);
+			   PreparedStatement sql;
+			try {
+				sql = (PreparedStatement) conn.prepareStatement(query);
+				 sql.executeUpdate();
+				 return true;
+				 
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}		
+			   
+		   }else{
+			   
+			   return false;
+		   }
+	   }
+	   
+	   
 	   public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
 			
-		   selectStatement("*","user","","");
+		   //selectStatement("*","user","","");
+		   
+		   JsonObject j = new JsonObject();
+		   
+		   j = apiRequest.getQuest(1);
+		   
+		   System.out.println(j.get("title"));
+		   
+		   
 		   
 		 //  String l_in[] = {"first_name","last_name"};
 		  // String l_in2[] = {"'NAMESET'","'NAMELAST'"};
