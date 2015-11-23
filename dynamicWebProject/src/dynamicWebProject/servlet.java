@@ -13,9 +13,11 @@ public class servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
+			System.out.println("teststeststset");
+			System.out.println(request.getRequestURI());
+			
 			if (request.getRequestURI().equals("/dynamicWebProject/")){
+				System.out.println(request.getRequestURI());
 				RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 			
 				rd.forward(request, response);

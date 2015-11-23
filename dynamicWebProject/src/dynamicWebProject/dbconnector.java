@@ -100,6 +100,7 @@ public class dbconnector {
 		   }
 	   }
 	   
+	   /*
 	   public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
 			
 		   selectStatement("*","user","","");
@@ -109,6 +110,7 @@ public class dbconnector {
 		 // System.out.println(insertStatement("user",l_in,l_in2));
 		   
 		}
+		*/
 }
 
 /*
