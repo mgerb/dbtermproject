@@ -108,7 +108,7 @@ public class dbconnector {
 		   }
 	   }
 	   
-	   public static boolean updateStatement(String into, String[] cols, String[] data) throws ClassNotFoundException{
+	   public static boolean updateStatement(String into, String[] cols, String[] data,  String where) throws ClassNotFoundException{
 		   Connection conn = getConnection();
 		   
 		   if(cols.length > 0 && data.length > 0){
