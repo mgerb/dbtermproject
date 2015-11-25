@@ -7,7 +7,7 @@ public class quest {
 		String l_in2[] = {questname};
 		
 		try {
-			dbconnector.insertStatement("user",l_in,l_in2);
+			dbconnector.insertStatement("quests",l_in,l_in2);
 				
 			return true;
 		} catch (ClassNotFoundException e) {
@@ -23,7 +23,7 @@ public class quest {
 		String l_in2[] = {Integer.toString(questid)};
 		
 		try {
-			dbconnector.insertStatement("user_quests",l_in,l_in2);
+			dbconnector.updateStatement("user_quests",l_in,l_in2, "");
 				
 			return true;
 		} catch (ClassNotFoundException e) {
