@@ -1,23 +1,14 @@
 package dynamicWebProject;
 
 public class purchase {
-
-	public static boolean storeCardInformation(String cardNumber, String firstname, String lastname){
-		return true;
-
 	
-	
-	
-	
-	}
-	
-	public static boolean addPurchase(int account, int amount, int date){
+	public static boolean addPurchase(int account, String card, String cardtype, int amount, int date){
 		
-		String l_in[] = {Integer.toString(account), Integer.toString(amount)};
-		String l_in2[] = {Integer.toString(date)};
+		String l_in[] = {"account_number","card_number","card_type","transaction_amt","date"};
+		String l_in2[] = {Integer.toString(account), card, cardtype, Integer.toString(amount),Integer.toString(date)};
 		
 		try {
-			dbconnector.insertStatement("user",l_in,l_in2);
+			dbconnector.insertStatement("purchase_table",l_in,l_in2);
 			return true;
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

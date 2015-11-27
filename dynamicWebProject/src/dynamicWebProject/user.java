@@ -46,11 +46,11 @@ public class user {
 	
 	public static boolean completeQuest(String username, int questid){
 		
-		String l_in[] = {"quest_title"};
-		String l_in2[] = {Integer.toString(questid)};
+		String l_in[] = {"completion"};
+		String l_in2[] = {"1"};
 		
 		try {
-			dbconnector.updateStatement("user_quests",l_in,l_in2, "");
+			dbconnector.updateStatement("user_quests",l_in, l_in2, "user_quests.char_name = " + "'" + username + "' AND user_quests.quest_id = " + questid);
 				
 			return true;
 		} catch (ClassNotFoundException e) {

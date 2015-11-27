@@ -110,31 +110,21 @@ public class dbconnector {
 	   
 	   public static boolean updateStatement(String into, String[] cols, String[] data,  String where) throws ClassNotFoundException{
 		   Connection conn = getConnection();
-		   
+		   //UPDATE wom.user_quests SET completion = 1 WHERE user_quests.char_name = Jegar AND user_quests.quest_id = 1;
+		   //
+		   //UPDATE wom.user_quests SET completion = 0 WHERE user_quests.char_name = Jegar AND user_quests.quest_id = 1;
 		   if(cols.length > 0 && data.length > 0){
 			   //Check for the data length size
-			   String query = "update "+ DB_NAME + into + " (";
+			   String query = "UPDATE "+ DB_NAME + into + " SET ";
 			   
 			   for(int i=0;i<cols.length;i++){
 				   //For each Column, we add to the query
-				   System.out.println("Adding:" + cols[i]);
-				   query = query.concat(cols[i] +", ");
-				   System.out.println("Query:" + query);
-			   }
-			   
-			   	   query = query.substring(0, query.length() - 2);
-			   
-			   
-			  query = query.concat(") set(");
-			   
-			   for(int i=0;i<cols.length;i++){
-				   //For each value
-				   query = query.concat(data[i] +", ");
+				   query = query.concat(cols[i] +" = " + data[i] + ", ");
 			   }
 			   
 			   query = query.substring(0, query.length() - 2);
 			   
-			   query = query.concat(")");
+			   query = query.concat(" WHERE " + where + ";");
 			   
 			   System.out.println("query="+query);
 			   PreparedStatement sql;
@@ -154,23 +144,29 @@ public class dbconnector {
 		   }
 	   }
 	   
+	   public static boolean deleteStatement(){
+		   
+		   
+		   
+		   
+		   return false;
+	   }
 	   
 	   public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
 			
 		   //selectStatement("*","user","","");
 		   
-		   JsonObject j = new JsonObject();
+		   //JsonObject j = new JsonObject();
 		   
-		   j = apiRequest.getQuest(1);
+		   //j = apiRequest.getQuest(1);
 		   
-		   System.out.println(j.get("title"));
+		   //System.out.println(j.get("title"));
 		   
-		   
-		   
-		 //  String l_in[] = {"first_name","last_name"};
+		  // String l_in[] = {"first_name","last_name"};
 		  // String l_in2[] = {"'NAMESET'","'NAMELAST'"};
 		 // System.out.println(insertStatement("user",l_in,l_in2));
-		   
+		  // updateStatement("", l_in2, l_in, "");
+		   user.completeQuest("Jegar", 1);
 		}
 }
 
