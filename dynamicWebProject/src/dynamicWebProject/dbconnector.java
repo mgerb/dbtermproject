@@ -150,12 +150,25 @@ public class dbconnector {
 		   }
 	   }
 	   
-	   public static boolean deleteStatement(){
+	   public static boolean deleteStatement(String from, String where) throws ClassNotFoundException{
+		   //"DELETE FROM `base`.`cities` WHERE `cities`.`id` = 1"
+		   Connection conn = getConnection();
 		   
+		   String query = "DELETE FROM "+ DB_NAME + from + " WHERE " + where;
 		   
+		   System.out.println("query="+query);
+		   PreparedStatement sql;
+			try {
+				sql = (PreparedStatement) conn.prepareStatement(query);
+				 sql.executeUpdate();
+				 conn.close();
+				 return true;
+				 
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return false;
+			}		
 		   
-		   
-		   return false;
 	   }
 	   
 	   /*

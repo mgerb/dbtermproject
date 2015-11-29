@@ -21,7 +21,6 @@ public class purchase {
 		
 	}
 	
-	
 	public static boolean checkSubscription(String account){
 		try {
 			CachedRowSet c = dbconnector.selectStatement("*","purchase_table"," account_number = '" + account + "' ","");
@@ -39,7 +38,11 @@ public class purchase {
 		}
 }
 	
-	
+	public static boolean deleteSubscription(String account, int date){
+		
+		
+		return false;
+	}
 	
 	
 }

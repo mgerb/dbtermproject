@@ -38,9 +38,15 @@ public class friend {
 	}
 	
 	public static boolean deleteFriend(String username, String friend){
-		
-		
-		return true;
+		try {
+			dbconnector.deleteStatement("user_friends", "username = " + username + " AND " + "friend_name = " + friend);
+			
+			return true;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	//other methods to get friends list

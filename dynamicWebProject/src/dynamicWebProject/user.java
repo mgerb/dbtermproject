@@ -123,17 +123,47 @@ public class user {
 	
 	//increments quests completed for account number
 	public static boolean incrementQuestsCompleted(String account_number){
-		return true;
+		String l_in[] = {"account_number,char_level,quests_completed, image_path"};
+		String l_in2[] = {account_number,"1", "0", ""};
+		
+		try {
+			dbconnector.insertStatement("user_data",l_in,l_in2);
+			return true;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	//increments character level based on incAmount
 	public static boolean updateCharacterLevel(String account_number, int incAmount){
-		return true;
+		String l_in[] = {"char_level"};
+		String l_in2[] = {Integer.toString(incAmount)};
+		
+		try {
+			dbconnector.updateStatement("user_data", l_in, l_in2, "account_number = " + account_number);
+			return true;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
 	}
 	
 	//updates image path for account
 	public static boolean updateImagePath(String account_number, String path){
-		return true;
+		String l_in[] = {"img_path"};
+		String l_in2[] = {path};
+		
+		try {
+			dbconnector.updateStatement("user_data", l_in, l_in2, "account_number = " + account_number);
+			return true;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	
