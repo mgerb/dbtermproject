@@ -1,14 +1,16 @@
 package dynamicWebProject;
 import java.sql.SQLException;
 
+import javax.sql.rowset.CachedRowSet;
+
 import dynamicWebProject.dbconnector;
 
 public class user {
 
-	public static boolean addUser(String username, String first, String last){
+	public static boolean addUser(String username, String first, String last, String password){
 		//Creates a User, returns a account id
-		String l_in[] = {"user_name,first_name,last_name"};
-		String l_in2[] = {username,first, last};
+		String l_in[] = {"user_name,first_name,last_name, password"};
+		String l_in2[] = {username,first, last, password};
 		
 		try {
 			dbconnector.insertStatement("user",l_in,l_in2);
@@ -19,15 +21,34 @@ public class user {
 		}
 	}
 	
-	public boolean userExists(String username, int account){
+	public static boolean userExists(String username){
 			try {
-				dbconnector.selectStatement("*","user","","");
-				return true;
+				CachedRowSet c = dbconnector.selectStatement("*","user"," user_name = '" + username + "' ","");
+				
+				if (c.next()){
+					return true;
+				}
+				else {
+					return false;
+				}
+				
 			} catch (ClassNotFoundException | SQLException e) {
 				e.printStackTrace();
 				return false;
 			}
 	}
+	
+	public static CachedRowSet login(String username, String password){
+		try {
+			CachedRowSet c = dbconnector.selectStatement("*","user"," user_name = '" + username + "' ","");
+			
+			return c;
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+}
 	
 	public static boolean addQuest(String charname,int questid){
 		String l_in[] = {"char_name","quest_id"};
@@ -57,6 +78,65 @@ public class user {
 			e.printStackTrace();
 			return false;
 		}
+	}
 	
-}
+	public static CachedRowSet getUserData(String account_number){
+		try {
+			CachedRowSet c = dbconnector.selectStatement("*","user_data"," account_number = '" + account_number + "' ","");
+			
+			return c;
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static boolean initUserData(String account_number){
+		//Creates a User, returns a account id
+				String l_in[] = {"account_number,char_level,quests_completed, image_path"};
+				String l_in2[] = {account_number,"1", "0", ""};
+				
+				try {
+					dbconnector.insertStatement("user_data",l_in,l_in2);
+					return true;
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+					return false;
+				}
+	}
+	
+	public static String getAccountNumber(String user_name){
+		try {
+			CachedRowSet c = dbconnector.selectStatement("*","user"," user_name = '" + user_name + "' ","");
+			c.next();
+			
+			return c.getString(1);
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	//--------------------------------------------------- TO DO
+	
+	//increments quests completed for account number
+	public static boolean incrementQuestsCompleted(String account_number){
+		return true;
+	}
+	
+	//increments character level based on incAmount
+	public static boolean updateCharacterLevel(String account_number, int incAmount){
+		return true;
+	}
+	
+	//updates image path for account
+	public static boolean updateImagePath(String account_number, String path){
+		return true;
+	}
+	
+	
+	
+	//------------------------------------------------------
 }

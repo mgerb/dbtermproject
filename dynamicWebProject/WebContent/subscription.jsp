@@ -3,10 +3,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%@include file="header.jsp" %>
+<%@ include file="header.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
+<body>
 <body>
 <div class="container">
 
@@ -33,28 +34,35 @@
             <%} else {%>
             	<li><a href="login">Login</a></li>
             <%} %>
-            <li class="active"><a href="register">Register</a></li>
-            <li><a href="admin">Admin</a></li>
+            <li><a href="register">Register</a></li>
           </ul>
         </div><!-- /.nav-collapse -->
       </div><!-- /.container -->
     </nav><!-- /.navbar -->
 
-	<form class="form-signin" action="register" method="post">
-        <h2 class="form-signin-heading center">Register</h2>
-        <label for="inputUsername" class="sr-only">Username</label>
-        <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required>
+	<form class="form-signin" action="subscription" method="post">
+		
+        <h2 class="form-signin-heading center">Subscription</h2>
+        <div class="center">Subscription - $10 per month</div>
+        <div class="center">Subscription lasts until cancelled</div>
+        <br>
+        <label for="inputCardNumber" class="sr-only">Card Number</label>
+        <input name="card_number" type="text" id="inputCardNumber" class="form-control" placeholder="Card Number" required>
         
-        <label for="inputFirstName" class="sr-only">First Name</label>
-        <input name="firstName" type="text" id="inputFirstName" class="form-control" placeholder="First Name" required>
+        <label for="inputCardType" class="sr-only">Card Type</label>
+        <input name="card_type" type="text" id="inputCardType" class="form-control" placeholder="Card Type" required>
         
-        <label for="inputLastName" class="sr-only">Last Name</label>
-        <input name="lastName" type="text" id="inputLastName" class="form-control" placeholder="Last Name" required>
+        <label for="inputFirstName" class="sr-only">Card Type</label>
+        <input name="first_name" type="text" id="inputFirstName" class="form-control" placeholder="First Name" required>
         
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <label for="inputLastName" class="sr-only">Card Type</label>
+        <input name="last_name" type="text" id="inputLastName" class="form-control" placeholder="Last Name" required>
         
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+        <label for="inputDate" class="sr-only">Card Type</label>
+        <input name="date" type="text" id="inputDate" class="form-control" placeholder="Date" required>
+        <br>
+        
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
         <br>
         <% if (request.getAttribute("message") != null) {
     	  out.print(request.getAttribute("message"));

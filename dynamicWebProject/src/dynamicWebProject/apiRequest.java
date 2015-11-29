@@ -13,8 +13,9 @@ import com.google.gson.JsonParser;
 public class apiRequest {
 
 	
-	public static JsonObject getQuest(int questID) throws IOException{
+	public static JsonObject getQuest(int questID){
 		
+		try {
 		URL request = new URL("https://us.api.battle.net/wow/quest/" + questID +"?locale=en_US&apikey=9uyk8253nk5hc4ap2ue45bb5mbqtuvhm");
         URLConnection uc = request.openConnection();
         BufferedReader in = new BufferedReader(
@@ -33,7 +34,18 @@ public class apiRequest {
         in.close();
         
         return o;
+		}
 		
+		catch (Exception e){
+			return null;
+		}
 	}
 	
+	/*
+	public static void main(String[] args) throws IOException{
+		JsonObject o = getQuest(1);
+		
+		System.out.println(o.toString());
+	}
+	*/
 }

@@ -1,12 +1,16 @@
 package dynamicWebProject;
+import java.sql.SQLException;
+
+import javax.sql.rowset.CachedRowSet;
+
 import dynamicWebProject.dbconnector;
 
 public class friend {
 
-	public static boolean addFriend(int accountnum, String friend){
+	public static boolean addFriend(String accountnum, String friend){
 		
 		String l_in[] = {"account_number,friend_name"};
-		String l_in2[] = {Integer.toString(accountnum), friend};
+		String l_in2[] = {accountnum, friend};
 		
 		
 		try {
@@ -18,6 +22,19 @@ public class friend {
 			return false;
 		}
 		
+	}
+	
+	public static CachedRowSet getFriends(String account_number) {
+		try {
+			CachedRowSet c = dbconnector.selectStatement("*","user_friends"," account_number = '" + account_number + "' ","");
+			
+			
+			return c;
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public static boolean deleteFriend(String username, String friend){

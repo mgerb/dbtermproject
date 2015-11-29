@@ -18,24 +18,25 @@ public class dbconnector {
 
 	   //  Database credentials
 	   static final String USER = "root";
-	   static final String PASS = "";
+	   static final String PASS = "root";
 	   
 	   
 	   public static Connection getConnection() throws ClassNotFoundException{
 		   try{
-			   Class.forName("com.mysql.jdbc.Driver");
+			   Class.forName(JDBC_DRIVER);
 			   
-			   return DriverManager.getConnection(DB_URL,"root","");
+			   return DriverManager.getConnection(DB_URL,USER,PASS);
 		   }
 		   
 		   catch(SQLException se){
+			   System.out.println("null db connection");
 			   return null;
 		   }
 		   
 	   }
 	   
 	   public static CachedRowSet selectStatement(String select, String from, String where, String order) throws ClassNotFoundException, SQLException{
-		   Connection conn = getConnection();
+		   Connection conn = dbconnector.getConnection();
 		   CachedRowSet cachedResults = null;
 		   
 		   String query = "Select " + select + " from " + DB_NAME + from;
@@ -58,6 +59,8 @@ public class dbconnector {
 		   cachedResults.populate(results);
 			
 		   //cachedResults.next();
+		   conn.close();
+		   results.close();
 		   
 		   return cachedResults;
 	   }
@@ -81,9 +84,9 @@ public class dbconnector {
 			   
 			  query = query.concat(") values(");
 			   
-			   for(int i=0;i<cols.length;i++){
+			   for(int i=0;i<data.length;i++){
 				   //For each value
-				   query = query.concat(data[i] +", ");
+				   query = query.concat("'" + data[i] +"', ");
 			   }
 			   
 			   query = query.substring(0, query.length() - 2);
@@ -95,6 +98,8 @@ public class dbconnector {
 			try {
 				sql = (PreparedStatement) conn.prepareStatement(query);
 				 sql.executeUpdate();
+				 conn.close();
+				 
 				 return true;
 				 
 			} catch (SQLException e) {
@@ -131,6 +136,7 @@ public class dbconnector {
 			try {
 				sql = (PreparedStatement) conn.prepareStatement(query);
 				 sql.executeUpdate();
+				 conn.close();
 				 return true;
 				 
 			} catch (SQLException e) {
@@ -152,6 +158,7 @@ public class dbconnector {
 		   return false;
 	   }
 	   
+	   /*
 	   public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
 			
 		   //selectStatement("*","user","","");
@@ -168,6 +175,7 @@ public class dbconnector {
 		  // updateStatement("", l_in2, l_in, "");
 		   user.completeQuest("Jegar", 1);
 		}
+		*/
 }
 
 /*

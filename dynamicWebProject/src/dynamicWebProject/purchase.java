@@ -1,11 +1,15 @@
 package dynamicWebProject;
 
+import java.sql.SQLException;
+
+import javax.sql.rowset.CachedRowSet;
+
 public class purchase {
 	
-	public static boolean addPurchase(int account, String card, String cardtype, int amount, int date){
+	public static boolean addPurchase(String account, String card, String cardtype, String first_name, String last_name, String date){
 		
-		String l_in[] = {"account_number","card_number","card_type","transaction_amt","date"};
-		String l_in2[] = {Integer.toString(account), card, cardtype, Integer.toString(amount),Integer.toString(date)};
+		String l_in[] = {"account_number","card_number","card_type","first_name", "last_name", "date"};
+		String l_in2[] = {account, card, cardtype, first_name, last_name, date};
 		
 		try {
 			dbconnector.insertStatement("purchase_table",l_in,l_in2);
@@ -18,7 +22,22 @@ public class purchase {
 	}
 	
 	
-	
+	public static boolean checkSubscription(String account){
+		try {
+			CachedRowSet c = dbconnector.selectStatement("*","purchase_table"," account_number = '" + account + "' ","");
+			
+			if (c.next()){
+				return true;
+			}
+			else {
+				return false;
+			}
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+}
 	
 	
 	

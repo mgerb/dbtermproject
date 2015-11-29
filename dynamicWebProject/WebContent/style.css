@@ -8,6 +8,11 @@
     display: block;
 }
 
+.addFriend{
+	width: 200px;
+}
+
+
 .headerText{
 	text-align: center;
 	vertical-align: middle;
