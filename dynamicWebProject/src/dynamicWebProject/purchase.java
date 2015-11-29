@@ -38,10 +38,16 @@ public class purchase {
 		}
 }
 	
-	public static boolean deleteSubscription(String account, int date){
-		
-		
-		return false;
+	public static boolean deleteSubscription(String account, String date){
+		try {
+			dbconnector.deleteStatement("purchase_table", "account_number = '" + account + "' AND date = '" + date + "'");
+			
+			return true;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	
