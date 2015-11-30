@@ -71,71 +71,114 @@
 	<h3>Account Information</h3>
 	Acount Number: <%= account_number %>
 	<br>
-	Subscription Status: <% if (request.getAttribute("subscriptionActive") != null) { out.print("Active"); }%>
-	<br>
-	<a href="./subscription">Update Subscription</a>
-	<br>
-	<a href="./cancelsubscription">Cancel Subscription</a>
-	</div>
+	Subscription Status: <% if (request.getAttribute("subscriptionActive") != null) { %>
 	
-	<div class="col-lg-6">
-	<h1>Quest Log</h1>
-	<% while(cUserQuests.next())  {%>
-	
-			<li><%= cUserQuests.getString(2) %></li>
-		
-		<%} %>
-	<h1>Available Quests</h1>
-	<table class="table">
-		<tr>
-			<th>Title</th>
-			<th>Req Level</th>
-		</tr>
-		
-		<% while(cAvailableQuests.next())  {%>
-	
-			<tr>
-				<td><%=cAvailableQuests.getString(2)%></td>
-				<td><%=cAvailableQuests.getString(2)%></td>
-			
-			</tr>
-		<%} %>
-	</table>
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-lg-6">
-		<h1>Friends</h1>
-		<ol>
-		<% while(cUserFriends.next())  {%>
-	
-			<li><%= cUserFriends.getString(2) %></li>
-		
-		<%} %>
-	
-		</ol>
-		
+		Active
 		<br>
-		
-		<div class="addFriend">
-			<form action="./addfriend" method="post">
-				<input type="text" class="form-control" placeholder="Add Friend" name="friend">
-				<input class="form-control" type="submit" value="Add">
-			</form>
-		</div>
-		
-		
+		<a href="./cancelSubscription">Cancel Subscription</a>
+	<% } else {%>
+		Inactive
+		<br>
+		<a href="./subscription">Update Subscription</a>
+	<%} %>
+	
 	</div>
 	
-	
-	<div class="col-lg-6">
-		<h1>Guild</h1>
-	</div>
+	<!-- ----------------------------------------- FRIENDS/GUILD TAB --------------------------------------------------->
+		<%if (request.getAttribute("subscriptionActive") != null) { %>
+			<div class="col-lg-6">
+				<h1>Friends</h1>
+				<ol>
+				<% while(cUserFriends.next())  {%>
+			
+					<li><%= cUserFriends.getString(2) %></li>
+				
+				<%} %>
+			
+				</ol>
+				
+				<br>
+				
+				<div class="addFriend">
+					<form action="./addfriend" method="post">
+						<input type="text" class="form-control" placeholder="Add Friend" name="friend">
+						<input class="form-control" type="submit" value="Add">
+					</form>
+				</div>
+				
+				<h1>Guild</h1>
+			
+			</div>
+		<%} %>
 	
 </div>
+<br>
+	<!-----------------------------------------------QUEST LOG/COMPLETED QUESTS ------------------------------------>
+	<% if (request.getAttribute("subscriptionActive") != null) { %>
+		<div class="row">
+			<div class="col-lg-6">
+				
+				<h1 class="center">Quest Log</h1>
+				<table class="table">
+					<tr>
+						<th>Title</th>
+						<th>Req Level</th>
+						<th>Complete Quest</th>
+					</tr>
+				<% while(cUserQuests.next())  {%>
+					<tr>
+						<td><%= cUserQuests.getString(5) %></td>
+						<td><%= cUserQuests.getString(6) %></td>
+						<td>
+							<form action="completeUserQuest" method="post">
+								<input type="text" name="completequest_id" value="<%=cUserQuests.getString(4)%>" hidden>
+								<input class="btn" type="submit" value="Complete Quest">
+							
+							</form>
+						</td>
+					</tr>
+				<%} %>
+				</table>
+				
+			</div>
+			
+		<!---------------------------------------------- AVAILABLE QUESTS ---------------------------------------------------->
+			<div class="col-lg-6">
+			
+				<h1 class="center" >Available Quests</h1>
+			<table class="table">
+				<tr>
+					<th>Title</th>
+					<th>Req Level</th>
+					<th>Add Quest</th>
+				</tr>
+				
+				<% while(cAvailableQuests.next())  {%>
+			
+					<tr>
+						<td><%=cAvailableQuests.getString(2)%></td>
+						<td><%=cAvailableQuests.getString(3)%></td>
+						
+						<%if (Integer.parseInt(characterLevel) >= Integer.parseInt(cAvailableQuests.getString(3))) {%>
+						<td>
+							<form action="addUserQuest" method="post">
+								<input type="text" name="addquest_id" value="<%=cAvailableQuests.getString(1)%>" hidden>
+								<input class="btn" type="submit" value="Add Quest">
+							
+							</form>
+						</td>
+						<%} %>
+					</tr>
+				<%} %>
+			</table>
+				
+			</div>
+			
+		</div>
 
-<%} %>
+<%}} else {
+	response.sendRedirect("/dynamicWebProject/login");
+}%>
 
 </div>
 

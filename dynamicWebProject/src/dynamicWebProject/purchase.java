@@ -38,9 +38,10 @@ public class purchase {
 		}
 }
 	
-	public static boolean deleteSubscription(String account, String date){
+	public static boolean deleteSubscription(String account_number){
 		try {
-			dbconnector.deleteStatement("purchase_table", "account_number = '" + account + "' AND date = '" + date + "'");
+			dbconnector.deleteStatement("purchase_table", "account_number = '" + account_number + "'");
+			
 			
 			return true;
 		} catch (ClassNotFoundException e) {

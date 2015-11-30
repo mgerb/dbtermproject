@@ -19,23 +19,24 @@ public class servlet extends HttpServlet {
 			System.out.println(request.getRequestURI());
 			
 			String account_number = (String) session.getAttribute("account_number");
+			String user_name = (String) session.getAttribute("username");
 			
 			if (request.getRequestURI().equals("/dynamicWebProject/index")){
 				
 				if(account_number != null){
 					if (purchase.checkSubscription((String)session.getAttribute("account_number"))){
 						request.setAttribute("subscriptionActive", "true");
-						
-						CachedRowSet cUserData = user.getUserData(account_number);
-						CachedRowSet cUserFriends = friend.getFriends(account_number);
-						CachedRowSet cUserQuests = quest.getUserQuests(account_number);
-						CachedRowSet cAvailableQuests = quest.getAvailableQuests();
-						
-						request.setAttribute("cAvailableQuests", cAvailableQuests);
-						request.setAttribute("cUserQuests", cUserQuests);
-						request.setAttribute("cUserData", cUserData);
-						request.setAttribute("cUserFriends", cUserFriends);
 					}
+					
+					CachedRowSet cUserData = user.getUserData(account_number);
+					CachedRowSet cUserFriends = friend.getFriends(account_number);
+					CachedRowSet cUserQuests = user.getUserQuests(account_number);
+					CachedRowSet cAvailableQuests = quest.getAvailableQuests(account_number);
+					
+					request.setAttribute("cAvailableQuests", cAvailableQuests);
+					request.setAttribute("cUserQuests", cUserQuests);
+					request.setAttribute("cUserData", cUserData);
+					request.setAttribute("cUserFriends", cUserFriends);
 				}
 				
 				RequestDispatcher rd = request.getRequestDispatcher("index1.jsp");
@@ -68,6 +69,16 @@ public class servlet extends HttpServlet {
 				RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
 				
 				rd.forward(request, response);
+			}
+			
+			//cancel subscription
+			if (request.getRequestURI().equals("/dynamicWebProject/cancelSubscription")){
+				
+				if (purchase.deleteSubscription(account_number)){
+					System.out.println("subscription cancelled");
+				}
+				
+				response.sendRedirect("/dynamicWebProject/index");
 			}
 	}
 
@@ -154,6 +165,7 @@ public class servlet extends HttpServlet {
 			//query db to check and see if user exists - if so set session equal to username
 		}
 		
+		//update subscription
 		if (request.getRequestURI().equals("/dynamicWebProject/subscription")){
 			String card_number = (String) request.getParameter("card_number");
 			String card_type = (String) request.getParameter("card_type");
@@ -194,30 +206,63 @@ public class servlet extends HttpServlet {
 			}
 		}
 		
-		//------------------ USING BLIZZARD API
-		//add quest by range
-		if (request.getRequestURI().equals("/dynamicWebProject/populateQuests")){
+			//------------------ USING BLIZZARD API
+			//add quest by range
+			if (request.getRequestURI().equals("/dynamicWebProject/populateQuests")){
+				
+				String f = request.getParameter("from");
+				String t = request.getParameter("to");
+				
+				int from = Integer.parseInt(f);
+				int to = Integer.parseInt(t);
+				quest.populateQuests(from, to);
+				
+				response.sendRedirect("/dynamicWebProject/admin");
+			}
 			
-			String f = request.getParameter("from");
-			String t = request.getParameter("to");
+			//add quest by id
+			if (request.getRequestURI().equals("/dynamicWebProject/addQuestByID")){
+				
+				String q = request.getParameter("quest");
+				
+				int qu = Integer.parseInt(q);
+				
+				quest.addQuestById(qu);
+				
+				response.sendRedirect("/dynamicWebProject/admin");
+			}
+			//------------------------------------
 			
-			int from = Integer.parseInt(f);
-			int to = Integer.parseInt(t);
-			quest.populateQuests(from, to);
+		//add quest to user quest log
+		if (request.getRequestURI().equals("/dynamicWebProject/addUserQuest")){
 			
-			response.sendRedirect("/dynamicWebProject/admin");
+			String quest_id = request.getParameter("addquest_id");
+			
+			String account_number = (String) session.getAttribute("account_number");
+			
+			if (user.addQuest(account_number, quest_id)){
+				
+			}
+
+			response.sendRedirect("/dynamicWebProject/index");
 		}
 		
-		//add quest by id
-		if (request.getRequestURI().equals("/dynamicWebProject/addQuestByID")){
+		//complete a user quest
+		if (request.getRequestURI().equals("/dynamicWebProject/completeUserQuest")){
 			
-			String q = request.getParameter("quest");
+			String quest_id = request.getParameter("completequest_id");
 			
-			int qu = Integer.parseInt(q);
+			String account_number = (String) session.getAttribute("account_number");
 			
-			quest.addQuestById(qu);
-			
-			response.sendRedirect("/dynamicWebProject/admin");
+			if (user.completeQuest(account_number, quest_id)){
+				if(user.incrementQuestsCompleted(account_number)){
+					if(user.updateCharacterLevel(account_number)){
+						System.out.println("quest " + quest_id + " completed");
+					}
+				}	
+			}
+
+			response.sendRedirect("/dynamicWebProject/index");
 		}
 }
 	

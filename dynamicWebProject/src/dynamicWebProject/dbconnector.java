@@ -18,7 +18,7 @@ public class dbconnector {
 
 	   //  Database credentials
 	   static final String USER = "root";
-	   static final String PASS = "root";
+	   static final String PASS = "";
 	   
 	   
 	   public static Connection getConnection() throws ClassNotFoundException{

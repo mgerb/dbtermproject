@@ -50,9 +50,9 @@ public class user {
 		}
 }
 	
-	public static boolean addQuest(String charname,int questid){
-		String l_in[] = {"char_name","quest_id"};
-		String l_in2[] = {charname,Integer.toString(questid)};
+	public static boolean addQuest(String account_number,String quest_id){
+		String l_in[] = {"account_number","quest_id"};
+		String l_in2[] = {account_number,quest_id};
 		
 		try {
 			dbconnector.insertStatement("user_quests",l_in,l_in2);
@@ -65,13 +65,25 @@ public class user {
 
 	}
 	
-	public static boolean completeQuest(String username, int questid){
+	public static CachedRowSet getUserQuests(String account_number){
+		try {
+			CachedRowSet c = dbconnector.selectStatement("*","user_quests join wom.quests"," quests.quest_id = user_quests.quest_id and completion = '0' and account_number = '" + account_number + "' ","");
+			
+			return c;
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static boolean completeQuest(String account_number, String questid){
 		
 		String l_in[] = {"completion"};
 		String l_in2[] = {"1"};
 		
 		try {
-			dbconnector.updateStatement("user_quests",l_in, l_in2, "user_quests.char_name = " + "'" + username + "' AND user_quests.quest_id = " + questid);
+			dbconnector.updateStatement("user_quests",l_in, l_in2, "user_quests.account_number = " + "'" + account_number + "' AND user_quests.quest_id = " + questid);
 				
 			return true;
 		} catch (ClassNotFoundException e) {
@@ -123,11 +135,11 @@ public class user {
 	
 	//increments quests completed for account number
 	public static boolean incrementQuestsCompleted(String account_number){
-		String l_in[] = {"account_number,char_level,quests_completed, image_path"};
-		String l_in2[] = {account_number,"1", "0", ""};
+		String l_in[] = {"quests_completed"};
+		String l_in2[] = {"quests_completed + 1"};
 		
 		try {
-			dbconnector.insertStatement("user_data",l_in,l_in2);
+			dbconnector.updateStatement("user_data",l_in,l_in2, "account_number =" + account_number);
 			return true;
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -136,9 +148,9 @@ public class user {
 	}
 	
 	//increments character level based on incAmount
-	public static boolean updateCharacterLevel(String account_number, int incAmount){
+	public static boolean updateCharacterLevel(String account_number){
 		String l_in[] = {"char_level"};
-		String l_in2[] = {Integer.toString(incAmount)};
+		String l_in2[] = {"char_level + 2"};
 		
 		try {
 			dbconnector.updateStatement("user_data", l_in, l_in2, "account_number = " + account_number);

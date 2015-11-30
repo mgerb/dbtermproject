@@ -61,22 +61,10 @@ public class quest {
 		}
 	}
 	
-	//get all available quests
-	public static CachedRowSet getUserQuests(String account_number){
+	//get all available quests	
+	public static CachedRowSet getAvailableQuests(String account_number){
 		try {
-			CachedRowSet c = dbconnector.selectStatement("*","user_quests join wom.quests"," quests.quest_id = user_quests.quest_id and completion = '0' and account_number = '" + account_number + "' ","");
-			
-			return c;
-			
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	public static CachedRowSet getAvailableQuests(){
-		try {
-			CachedRowSet c = dbconnector.selectStatement("*","quests","","");
+			CachedRowSet c = dbconnector.selectStatement("*","quests"," quests.quest_id not in (select quest_id from wom.user_quests where account_number = " + account_number + ")","quest_reqlvl");
 			
 			return c;
 			
