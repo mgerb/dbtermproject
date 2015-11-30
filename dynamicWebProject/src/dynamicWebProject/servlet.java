@@ -1,14 +1,24 @@
 package dynamicWebProject;
 
 import java.io.*;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javax.servlet.*;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
 import javax.sql.rowset.CachedRowSet;
+
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+
+import javafx.application.Platform;
 
 import java.sql.*;
 
 /** Simple servlet used to test server. */
 
+@MultipartConfig
 public class servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -17,6 +27,10 @@ public class servlet extends HttpServlet {
 			System.out.println("session: " + session.getAttribute("username"));
 			
 			System.out.println(request.getRequestURI());
+			
+			Path path = Paths.get(request.getServletContext().getRealPath(""));
+			
+			System.out.println(path.getParent().getParent().getParent().getParent().getParent().getParent());
 			
 			String account_number = (String) session.getAttribute("account_number");
 			String user_name = (String) session.getAttribute("username");
@@ -28,13 +42,17 @@ public class servlet extends HttpServlet {
 						request.setAttribute("subscriptionActive", "true");
 					}
 					
+					CachedRowSet cGuildInfo = guild.getGuildInfo(account_number);
 					CachedRowSet cUserData = user.getUserData(account_number);
 					CachedRowSet cUserFriends = friend.getFriends(account_number);
-					CachedRowSet cUserQuests = user.getUserQuests(account_number);
-					CachedRowSet cAvailableQuests = quest.getAvailableQuests(account_number);
+					CachedRowSet cUserQuests = user.getQuestLog(account_number);
+					CachedRowSet cAvailableQuests = user.getAvailableQuests(account_number);
+					CachedRowSet cCompletedQuests = user.getCompletedQuests(account_number);
 					
+					request.setAttribute("cGuildInfo", cGuildInfo);
 					request.setAttribute("cAvailableQuests", cAvailableQuests);
 					request.setAttribute("cUserQuests", cUserQuests);
+					request.setAttribute("cCompletedQuests", cCompletedQuests);
 					request.setAttribute("cUserData", cUserData);
 					request.setAttribute("cUserFriends", cUserFriends);
 				}
@@ -66,9 +84,32 @@ public class servlet extends HttpServlet {
 			}
 			
 			else if (request.getRequestURI().equals("/dynamicWebProject/admin")){
+				CachedRowSet cAllQuests = quest.getAllQuests();
+				CachedRowSet cAllUsers = user.getAllUsers();
+				CachedRowSet cAllGuilds = guild.getAllGuilds();
+				
+				request.setAttribute("cAllGuilds", cAllGuilds);
+				request.setAttribute("cAllQuests", cAllQuests);
+				request.setAttribute("cAllUsers", cAllUsers);
+				
 				RequestDispatcher rd = request.getRequestDispatcher("admin.jsp");
 				
 				rd.forward(request, response);
+			}
+			
+			//cancel subscription
+			if (request.getRequestURI().equals("/dynamicWebProject/leaveGuild")){
+				
+				//if leader of guild delete guild
+				if (guild.checkLeader(account_number)){
+					guild.deleteGuild(account_number);
+				}
+				//if not leader of guild just leave the guild
+				else {
+					guild.deleteUserFromGuild(account_number);
+				}
+				
+				response.sendRedirect("/dynamicWebProject/index");
 			}
 			
 			//cancel subscription
@@ -190,20 +231,27 @@ public class servlet extends HttpServlet {
 			}
 		}
 		
-		//add friend
+		//add/remove friend
 		if (request.getRequestURI().equals("/dynamicWebProject/addfriend")){
 			String addfriend = (String) request.getParameter("friend");
 			String account_number = (String) session.getAttribute("account_number");
+			String add_remove_button = (String) request.getParameter("add_remove_button");
 			
-			if (user.userExists(addfriend)){
-				if (friend.addFriend(account_number, addfriend)){
-					response.sendRedirect("/dynamicWebProject/index");
+			if (add_remove_button.equals("Add")){
+				if (user.userExists(addfriend)){
+					if (friend.addFriend(account_number, addfriend)){
+						System.out.println("friend added");
+					}
 				}
 			}
 			
-			else {
-				response.sendRedirect("/dynamicWebProject/index");
+			else if (add_remove_button.equals("Remove")){
+				friend.deleteFriend(account_number, addfriend);
 			}
+			
+			
+			response.sendRedirect("/dynamicWebProject/index");
+		
 		}
 		
 			//------------------ USING BLIZZARD API
@@ -264,6 +312,66 @@ public class servlet extends HttpServlet {
 
 			response.sendRedirect("/dynamicWebProject/index");
 		}
+		
+		//delete quest from admin page
+		if (request.getRequestURI().equals("/dynamicWebProject/deleteQuest")){
+			String quest_id = request.getParameter("quest_id");
+			
+			quest.deleteQuest(quest_id);
+			
+			response.sendRedirect("/dynamicWebProject/admin");
+		}
+		
+		//add or join guild - create guild if doesn't exist and add leader flag
+		//join if guild does exist
+		if (request.getRequestURI().equals("/dynamicWebProject/addGuild")){
+			
+			String guild_title = request.getParameter("guild_title");
+			String account_number = (String) session.getAttribute("account_number");
+			
+			//join the guild if it exists
+			if (guild.guildExists(guild_title)){
+				if (guild.addGuild(guild_title, account_number, "0")){
+					System.out.println("Joined guild");
+				}
+			}
+			
+			//create guild with leader flag 1
+			else {
+				if (guild.addGuild(guild_title, account_number, "1")){
+					System.out.println("Created guild");
+				}
+			}
+			
+			response.sendRedirect("/dynamicWebProject/index");
+		}
+		
+		
+		//upload image
+		if (request.getRequestURI().equals("/dynamicWebProject/imageUpload")){
+			String account_number = (String) session.getAttribute("account_number");
+			
+			Part part = request.getPart("image");
+			String fileName = part.getSubmittedFileName();
+			
+			Path path = Paths.get(request.getServletContext().getRealPath(""));
+			String appPath = path.getParent().getParent().getParent().getParent().getParent().getParent().toString();
+			//String appPath = request.getServletContext().getRealPath("");
+			String savePath = appPath + File.separator + "dbtermproject/dynamicWebProject/WebContent/images/" + account_number;
+			
+			File fileSaveDir = new File(savePath);
+	        if (!fileSaveDir.exists()) {
+	            fileSaveDir.mkdir();
+	        }
+	            
+	        part.write(savePath + File.separator + fileName);
+	        
+	        user.updateImagePath(account_number, "'images/" + account_number + "/"+ fileName + "'");
+	        
+			response.sendRedirect("/dynamicWebProject/index");
+		}
+		
+		
 }
 	
 }

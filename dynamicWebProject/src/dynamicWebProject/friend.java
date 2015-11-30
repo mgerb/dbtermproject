@@ -37,9 +37,9 @@ public class friend {
 		}
 	}
 	
-	public static boolean deleteFriend(String username, String friend){
+	public static boolean deleteFriend(String account_number, String friend){
 		try {
-			dbconnector.deleteStatement("user_friends", "username = " + username + " AND " + "friend_name = " + friend);
+			dbconnector.deleteStatement("user_friends", "account_number = " + account_number + " AND " + "friend_name = '" + friend + "'");
 			
 			return true;
 		} catch (ClassNotFoundException e) {

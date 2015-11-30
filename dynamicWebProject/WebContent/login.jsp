@@ -5,7 +5,7 @@
 <head>
 <%@include file="header.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Login</title>
 </head>
 <body>
 	<div class="container">

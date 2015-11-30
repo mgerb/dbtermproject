@@ -65,9 +65,34 @@ public class user {
 
 	}
 	
-	public static CachedRowSet getUserQuests(String account_number){
+	//get all available quests	
+	public static CachedRowSet getAvailableQuests(String account_number){
+		try {
+			CachedRowSet c = dbconnector.selectStatement("*","quests"," quests.quest_id not in (select quest_id from wom.user_quests where account_number = " + account_number + ")","quest_reqlvl");
+			
+			return c;
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+		
+	public static CachedRowSet getQuestLog(String account_number){
 		try {
 			CachedRowSet c = dbconnector.selectStatement("*","user_quests join wom.quests"," quests.quest_id = user_quests.quest_id and completion = '0' and account_number = '" + account_number + "' ","");
+			
+			return c;
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static CachedRowSet getCompletedQuests(String account_number){
+		try {
+			CachedRowSet c = dbconnector.selectStatement("*","user_quests join wom.quests"," quests.quest_id = user_quests.quest_id and completion = '1' and account_number = '" + account_number + "' ","");
 			
 			return c;
 			
@@ -95,6 +120,18 @@ public class user {
 	public static CachedRowSet getUserData(String account_number){
 		try {
 			CachedRowSet c = dbconnector.selectStatement("*","user_data"," account_number = '" + account_number + "' ","");
+			
+			return c;
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static CachedRowSet getAllUsers(){
+		try {
+			CachedRowSet c = dbconnector.selectStatement("*","user","","account_number");
 			
 			return c;
 			
@@ -165,7 +202,7 @@ public class user {
 	
 	//updates image path for account
 	public static boolean updateImagePath(String account_number, String path){
-		String l_in[] = {"img_path"};
+		String l_in[] = {"image_path"};
 		String l_in2[] = {path};
 		
 		try {

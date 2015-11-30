@@ -62,9 +62,9 @@ public class quest {
 	}
 	
 	//get all available quests	
-	public static CachedRowSet getAvailableQuests(String account_number){
+	public static CachedRowSet getAllQuests(){
 		try {
-			CachedRowSet c = dbconnector.selectStatement("*","quests"," quests.quest_id not in (select quest_id from wom.user_quests where account_number = " + account_number + ")","quest_reqlvl");
+			CachedRowSet c = dbconnector.selectStatement("*","quests","","quest_reqlvl");
 			
 			return c;
 			
@@ -73,4 +73,14 @@ public class quest {
 			return null;
 		}
 	}
+	
+	public static void deleteQuest(String quest_id){
+		try {
+			dbconnector.deleteStatement("quests", "quest_id = '" + quest_id + "'");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	}

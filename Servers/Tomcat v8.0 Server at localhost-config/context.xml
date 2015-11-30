@@ -31,4 +31,7 @@
     <!--
     <Valve className="org.apache.catalina.valves.CometConnectionManagerValve" />
     -->
+    
+    allowCasualMultipartParsing="true"
+    
 </Context>
