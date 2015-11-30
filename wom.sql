@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 30, 2015 at 03:34 PM
+-- Generation Time: Dec 01, 2015 at 12:21 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -27,11 +27,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `guild` (
-  `guild_title` varchar(35) NOT NULL,
+  `guild_title` varchar(30) NOT NULL,
   `account_number` varchar(45) NOT NULL,
   `leaderflag` tinyint(1) NOT NULL,
-  PRIMARY KEY (`account_number`),
-  UNIQUE KEY `guild_title` (`guild_title`)
+  PRIMARY KEY (`account_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -73,19 +72,16 @@ INSERT INTO `quests` (`quest_id`, `quest_title`, `quest_reqlvl`) VALUES
 (2, 'Sharptalon''s Claw', 19),
 (11, 'Riverpaw Gnoll Bounty', 7),
 (16, 'Give Gerard a Drink', 1),
-(25, 'Simmer Down Now', 23),
 (35, 'Further Concerns', 7),
 (37, 'Find the Lost Guards', 7),
 (40, 'A Fishy Peril', 7),
 (46, 'Bounty on Murlocs', 7),
-(52, 'Protect the Frontier', 7),
 (54, 'Report to Goldshire', 1),
 (59, 'Cloth and Leather Armor', 7),
 (62, 'The Fargodeep Mine', 4),
 (71, 'Report to Thomas', 7),
 (76, 'The Jasperlode Mine', 4),
 (83, 'Fine Linen Goods', 7),
-(84, 'Back to Billy', 5),
 (85, 'Lost Necklace', 5),
 (86, 'Pie for Billy', 5),
 (87, 'Goldtooth', 5),
@@ -96,19 +92,11 @@ INSERT INTO `quests` (`quest_id`, `quest_title`, `quest_reqlvl`) VALUES
 (112, 'Collecting Kelp', 5),
 (114, 'The Escape', 5),
 (123, 'The Collector', 7),
-(147, 'Manhunt', 7),
 (171, 'A Warden of the Alliance', 10),
 (172, 'Children''s Week', 10),
-(176, 'Wanted:  "Hogger"', 7),
 (185, 'Tiger Hunting', 24),
 (186, 'Tiger Stalking', 24),
 (187, 'Tiger Prowess', 24),
-(188, 'Tiger Mastery', 24),
-(190, 'Panther Hunting', 24),
-(191, 'Panther Stalking', 24),
-(192, 'Panther Prowess', 24),
-(193, 'Panther Mastery', 24),
-(194, 'Raptor Hunting', 24),
 (195, 'Raptor Stalking', 24),
 (196, 'Raptor Prowess', 24),
 (197, 'Raptor Mastery', 24),
@@ -132,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `account_number_UNIQUE` (`account_number`),
   UNIQUE KEY `user_name` (`user_name`),
   UNIQUE KEY `user_name_2` (`user_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -161,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `user_friends` (
   `account_number` int(11) NOT NULL,
   `friend_name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 -- --------------------------------------------------------
 
@@ -173,9 +161,10 @@ CREATE TABLE IF NOT EXISTS `user_quests` (
   `account_number` int(11) NOT NULL,
   `quest_id` int(11) NOT NULL,
   `completion` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`quest_id`),
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
   KEY `quest_id_idx` (`quest_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
