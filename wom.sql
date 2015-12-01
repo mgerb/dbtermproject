@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2015 at 10:35 PM
+-- Generation Time: Dec 02, 2015 at 12:18 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -38,7 +38,10 @@ CREATE TABLE IF NOT EXISTS `guild` (
 --
 
 INSERT INTO `guild` (`guild_title`, `account_number`, `leaderflag`) VALUES
-('Subway Eat Flesh', 6, 1);
+('Subway Eat Flesh', 6, 1),
+('Assembly Swag', 8, 1),
+('Assembly Swag', 14, 0),
+('Alliance of the Lab', 17, 1);
 
 -- --------------------------------------------------------
 
@@ -61,7 +64,10 @@ CREATE TABLE IF NOT EXISTS `purchase_table` (
 --
 
 INSERT INTO `purchase_table` (`account_number`, `card_number`, `card_type`, `first_name`, `last_name`, `date`) VALUES
-(6, 'FADADADADADA', 'VISA', 'Jason', 'Carpen', '22/23/22');
+(6, 'FADADADADADA', 'VISA', 'Jason', 'Carpen', '22/23/22'),
+(8, '888-888-8888', 'Visa', 'N.Ryan', 'Dubstep', '12/1/2015'),
+(14, '888-888-8888', 'Visa', 'Ja', 'Carpenter', '12/1/2015'),
+(17, '999-999-9999', 'Mastercard', 'Jason', 'Caer', '12/1/2015');
 
 -- --------------------------------------------------------
 
@@ -86,16 +92,22 @@ INSERT INTO `quests` (`quest_id`, `quest_title`, `quest_reqlvl`) VALUES
 (2, 'Sharptalon''s Claw', 19),
 (11, 'Riverpaw Gnoll Bounty', 7),
 (16, 'Give Gerard a Drink', 1),
+(23, 'Ursangous'' Paw', 19),
+(24, 'Shadumbra''s Head', 19),
+(25, 'Simmer Down Now', 23),
 (35, 'Further Concerns', 7),
 (37, 'Find the Lost Guards', 7),
 (40, 'A Fishy Peril', 7),
+(45, 'Discover Rolf''s Fate', 7),
 (46, 'Bounty on Murlocs', 7),
+(52, 'Protect the Frontier', 7),
 (54, 'Report to Goldshire', 1),
 (59, 'Cloth and Leather Armor', 7),
 (62, 'The Fargodeep Mine', 4),
 (71, 'Report to Thomas', 7),
 (76, 'The Jasperlode Mine', 4),
 (83, 'Fine Linen Goods', 7),
+(84, 'Back to Billy', 5),
 (85, 'Lost Necklace', 5),
 (86, 'Pie for Billy', 5),
 (87, 'Goldtooth', 5),
@@ -134,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `account_number_UNIQUE` (`account_number`),
   UNIQUE KEY `user_name` (`user_name`),
   UNIQUE KEY `user_name_2` (`user_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `user`
@@ -152,7 +164,8 @@ INSERT INTO `user` (`account_number`, `user_name`, `first_name`, `last_name`, `p
 (14, 'Slygar', 'Bob', 'Scar', '1'),
 (15, 'Shoeblaster', 'Polo', 'Shultz', '1'),
 (16, 'Mitchwell', 'Mitch', 'Gerberbaby', '1'),
-(17, 'Carpensir', 'James', 'Carpet Turd', '1');
+(17, 'Carpensir', 'Jason', 'Carpet Turd', '1'),
+(18, 'J_son', 'JSON', 'JavaClass', '1');
 
 -- --------------------------------------------------------
 
@@ -183,10 +196,11 @@ INSERT INTO `user_data` (`account_number`, `char_level`, `quests_completed`, `im
 (11, 1, 0, ''),
 (12, 1, 0, ''),
 (13, 1, 0, ''),
-(14, 1, 0, ''),
+(14, 3, 1, ''),
 (15, 1, 0, ''),
 (16, 1, 0, ''),
-(17, 1, 0, '');
+(17, 15, 7, ''),
+(18, 1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -199,7 +213,23 @@ CREATE TABLE IF NOT EXISTS `user_friends` (
   `account_number` int(35) NOT NULL,
   `friend_name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
+
+--
+-- Dumping data for table `user_friends`
+--
+
+INSERT INTO `user_friends` (`id`, `account_number`, `friend_name`) VALUES
+(15, 17, 'Mitchwell'),
+(16, 17, 'Ja'),
+(17, 17, 'TeflonG'),
+(18, 8, 'TeflonG'),
+(21, 8, 'Mumkas'),
+(22, 8, 'Shakespear'),
+(23, 8, 'Dr.F'),
+(24, 14, 'Swagnath'),
+(25, 14, 'Mumkas'),
+(26, 14, 'TeflonG');
 
 -- --------------------------------------------------------
 
@@ -214,7 +244,7 @@ CREATE TABLE IF NOT EXISTS `user_quests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
   KEY `quest_id_idx` (`quest_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
 
 --
 -- Dumping data for table `user_quests`
@@ -223,7 +253,17 @@ CREATE TABLE IF NOT EXISTS `user_quests` (
 INSERT INTO `user_quests` (`account_number`, `quest_id`, `completion`, `id`) VALUES
 (6, 1, 1, 38),
 (6, 54, 1, 39),
-(6, 16, 0, 40);
+(6, 16, 0, 40),
+(17, 1, 1, 41),
+(17, 54, 1, 42),
+(17, 16, 1, 43),
+(17, 76, 1, 44),
+(17, 62, 1, 45),
+(17, 111, 1, 46),
+(17, 107, 1, 47),
+(14, 1, 1, 48),
+(14, 54, 0, 49),
+(14, 16, 0, 50);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
