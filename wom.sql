@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2015 at 12:21 AM
+-- Generation Time: Dec 01, 2015 at 10:35 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -28,10 +28,17 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `guild` (
   `guild_title` varchar(30) NOT NULL,
-  `account_number` varchar(45) NOT NULL,
+  `account_number` int(35) NOT NULL,
   `leaderflag` tinyint(1) NOT NULL,
   PRIMARY KEY (`account_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `guild`
+--
+
+INSERT INTO `guild` (`guild_title`, `account_number`, `leaderflag`) VALUES
+('Subway Eat Flesh', 6, 1);
 
 -- --------------------------------------------------------
 
@@ -40,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `guild` (
 --
 
 CREATE TABLE IF NOT EXISTS `purchase_table` (
-  `account_number` int(11) NOT NULL,
+  `account_number` int(35) NOT NULL,
   `card_number` varchar(20) NOT NULL,
   `card_type` varchar(35) NOT NULL,
   `first_name` varchar(20) NOT NULL,
@@ -48,6 +55,13 @@ CREATE TABLE IF NOT EXISTS `purchase_table` (
   `date` varchar(20) NOT NULL,
   PRIMARY KEY (`account_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchase_table`
+--
+
+INSERT INTO `purchase_table` (`account_number`, `card_number`, `card_type`, `first_name`, `last_name`, `date`) VALUES
+(6, 'FADADADADADA', 'VISA', 'Jason', 'Carpen', '22/23/22');
 
 -- --------------------------------------------------------
 
@@ -120,7 +134,25 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `account_number_UNIQUE` (`account_number`),
   UNIQUE KEY `user_name` (`user_name`),
   UNIQUE KEY `user_name_2` (`user_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`account_number`, `user_name`, `first_name`, `last_name`, `password`) VALUES
+(6, 'Ja', 'Da', 'Ma', '1'),
+(7, 'M_Smash', 'Tory', 'Jod', '1'),
+(8, 'Swagnath', 'N.Ryan', 'Dubstep', '1'),
+(9, 'Dr.F', 'John', 'French', '1'),
+(10, 'TeflonG', 'Gary', 'Chicken', '1'),
+(11, 'Shakespear', 'Mangled', 'Fang', '1'),
+(12, 'Take_That', 'Addi', 'Dad', '1'),
+(13, 'MumKas', 'Gregory', 'Ford-Harrison', '1'),
+(14, 'Slygar', 'Bob', 'Scar', '1'),
+(15, 'Shoeblaster', 'Polo', 'Shultz', '1'),
+(16, 'Mitchwell', 'Mitch', 'Gerberbaby', '1'),
+(17, 'Carpensir', 'James', 'Carpet Turd', '1');
 
 -- --------------------------------------------------------
 
@@ -129,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 CREATE TABLE IF NOT EXISTS `user_data` (
-  `account_number` int(11) NOT NULL,
+  `account_number` int(35) NOT NULL,
   `char_level` int(11) NOT NULL,
   `quests_completed` int(10) NOT NULL DEFAULT '0',
   `image_path` varchar(30) NOT NULL,
@@ -137,6 +169,24 @@ CREATE TABLE IF NOT EXISTS `user_data` (
   UNIQUE KEY `account_number` (`account_number`),
   KEY `account_number_idx` (`account_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_data`
+--
+
+INSERT INTO `user_data` (`account_number`, `char_level`, `quests_completed`, `image_path`) VALUES
+(6, 5, 2, ''),
+(7, 1, 0, ''),
+(8, 1, 0, ''),
+(9, 1, 0, ''),
+(10, 1, 0, ''),
+(11, 1, 0, ''),
+(12, 1, 0, ''),
+(13, 1, 0, ''),
+(14, 1, 0, ''),
+(15, 1, 0, ''),
+(16, 1, 0, ''),
+(17, 1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -146,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `user_data` (
 
 CREATE TABLE IF NOT EXISTS `user_friends` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_number` int(11) NOT NULL,
+  `account_number` int(35) NOT NULL,
   `friend_name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
@@ -158,13 +208,22 @@ CREATE TABLE IF NOT EXISTS `user_friends` (
 --
 
 CREATE TABLE IF NOT EXISTS `user_quests` (
-  `account_number` int(11) NOT NULL,
+  `account_number` int(35) NOT NULL,
   `quest_id` int(11) NOT NULL,
   `completion` tinyint(1) NOT NULL DEFAULT '0',
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
   KEY `quest_id_idx` (`quest_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+
+--
+-- Dumping data for table `user_quests`
+--
+
+INSERT INTO `user_quests` (`account_number`, `quest_id`, `completion`, `id`) VALUES
+(6, 1, 1, 38),
+(6, 54, 1, 39),
+(6, 16, 0, 40);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
