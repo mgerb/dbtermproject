@@ -354,10 +354,19 @@ public class servlet extends HttpServlet {
 			Part part = request.getPart("image");
 			String fileName = part.getSubmittedFileName();
 			
+			//to access while running in eclipse
+			
+			/*
 			Path path = Paths.get(request.getServletContext().getRealPath(""));
 			String appPath = path.getParent().getParent().getParent().getParent().getParent().getParent().toString();
 			//String appPath = request.getServletContext().getRealPath("");
 			String savePath = appPath + File.separator + "dbtermproject/dynamicWebProject/WebContent/images/" + account_number;
+			*/
+			
+			Path path = Paths.get(request.getServletContext().getRealPath(""));
+			//String appPath = path.getParent().getParent().getParent().getParent().getParent().getParent().toString();
+			//String appPath = request.getServletContext().getRealPath("");
+			String savePath = path + File.separator + "/images/" + account_number;
 			
 			File fileSaveDir = new File(savePath);
 	        if (!fileSaveDir.exists()) {
