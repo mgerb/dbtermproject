@@ -28,10 +28,6 @@ public class servlet extends HttpServlet {
 			
 			System.out.println(request.getRequestURI());
 			
-			Path path = Paths.get(request.getServletContext().getRealPath(""));
-			
-			System.out.println(path.getParent().getParent().getParent().getParent().getParent().getParent());
-			
 			String account_number = (String) session.getAttribute("account_number");
 			String user_name = (String) session.getAttribute("username");
 			
