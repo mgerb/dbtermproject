@@ -13,11 +13,11 @@ public class dbconnector {
 	
 	// JDBC driver name and database URL
 	   static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	   static final String DB_URL = "jdbc:mysql://127.0.0.1:3306";
-	   static final String DB_NAME = "wom.";
+	   static final String DB_URL = "jdbc:mysql://us-cdbr-iron-east-03.cleardb.net:3306";
+	   static final String DB_NAME = "heroku_3c9784286d50ef7.";
 
 	   //  Database credentials
-	   static final String USER = "root";
+	   static final String USER = "";
 	   static final String PASS = "";
 	   
 	   

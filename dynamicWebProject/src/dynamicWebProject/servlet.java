@@ -12,7 +12,6 @@ import javax.sql.rowset.CachedRowSet;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 
-import javafx.application.Platform;
 
 import java.sql.*;
 
