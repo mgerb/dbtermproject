@@ -55,6 +55,10 @@
       </div><!-- /.container -->
     </nav><!-- /.navbar -->
 
+<% 
+String checkAdmin = (String) session.getAttribute("username");
+
+if (checkAdmin != null && checkAdmin.equals("admin")) { %>
 
 <h1 class="center">Admin Functions</h1>
 
@@ -167,6 +171,12 @@
 	
 </div>
 
+<%} else {%>
+<br>
+<br>
+<h1 class="center">You are not authorized to be here!</h1>
+
+<%} %>
 </div>
 
 </body>
